@@ -25,10 +25,12 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/news-scraper", { useNewUrlParser: true });
 
 // Routes
+// Home page
 app.get("/", function(req, res) {
     res.render("home");
 });
 
+// Saved articles
 app.get("/saved", function (req, res) {
     res.render("saved");
 });
