@@ -6,15 +6,15 @@
 </div>
 
 <div class="container">
-    {{!-- {{#each}} --}}
+    {{#each articles}}
         <div class="card">
             <div class="card-header">
                 {{title}} title
                 <a href="#" class="btn btn-success">Save Article</a>
             </div>
             <div class="card-body">
-                <p class="card-text">Summary</p>
+                <p class="card-text">Summary {{link}}</p>
             </div>
         </div>
-    {{!-- {{/each}} --}}
+    {{/each}}
 </div>

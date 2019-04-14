@@ -4,7 +4,7 @@ var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 var axios = require("axios");
 var cheerio = require("cheerio");
-// var db = require("/models");
+var db = require("./models");
 
 // Express
 var PORT = process.env.PORT || 8000;
@@ -27,12 +27,39 @@ mongoose.connect("mongodb://localhost/news-scraper", { useNewUrlParser: true });
 // Routes
 // Home page
 app.get("/", function(req, res) {
-    res.render("home");
+    db.Article.find({}).then(function(dbArticles) {
+        console.log(dbArticles);
+        res.render("home", {articles: dbArticles}); 
+    });
 });
 
 // Saved articles
 app.get("/saved", function (req, res) {
     res.render("saved");
+});
+
+// Scrap new articles
+app.get("/scrape", function (req, res) {
+    axios.get("https://www.digg.com").then(function (response) {
+        var $ = cheerio.load(response.data);
+        $("h2 a").each(function (i, element) {
+
+            var title = $(element).text();
+            var link = $(element).attr("href");
+
+            db.Article.create({
+                title: title,
+                link: link
+            }, function (error, inserted) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    // res.send("Scrape complete!");
+                    res.redirect("/");
+                }
+            });
+        });
+    });
 });
 
 // Start the server
