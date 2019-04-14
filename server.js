@@ -28,7 +28,7 @@ mongoose.connect("mongodb://localhost/news-scraper", { useNewUrlParser: true });
 // Home page
 app.get("/", function(req, res) {
     db.Article.find({}).then(function(dbArticles) {
-        console.log(dbArticles);
+        // console.log(dbArticles);
         res.render("home", {articles: dbArticles}); 
     });
 });
@@ -42,14 +42,20 @@ app.get("/saved", function (req, res) {
 app.get("/scrape", function (req, res) {
     axios.get("https://www.digg.com").then(function (response) {
         var $ = cheerio.load(response.data);
-        $("h2 a").each(function (i, element) {
+        $("article").each(function (i, element) {
 
-            var title = $(element).text();
-            var link = $(element).attr("href");
+            var title = $(element).find("h2").text();
+            var link = $(element).attr("data-contenturl");
+            var summary = $(element).find(".digg-story__description").text();
+
+            console.log(title);
+            console.log(link);
+            console.log(summary);
 
             db.Article.create({
                 title: title,
-                link: link
+                link: link,
+                summary: summary
             }, function (error, inserted) {
                 if (error) {
                     console.log(error);
