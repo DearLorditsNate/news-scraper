@@ -75,6 +75,20 @@ app.get("/delete", function(req, res) {
     });
 });
 
+app.put("/save/:id", function(req, res) {
+    db.Article.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { saved: true } },
+      { new: true }
+    )
+      .then(function(saved) {
+        res.json(saved);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+});
+
 // Start the server
 app.listen(PORT, function () {
     console.log("Listening on port " + PORT);
