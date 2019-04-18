@@ -30,6 +30,8 @@ app.get("/", function(req, res) {
     db.Article.find({}).then(function(dbArticles) {
         // console.log(dbArticles);
         res.render("home", {articles: dbArticles}); 
+    }).catch(function(error) {
+        console.log(error);
     });
 });
 
@@ -56,15 +58,20 @@ app.get("/scrape", function (req, res) {
                 title: title,
                 link: link,
                 summary: summary
-            }, function (error, inserted) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    // res.send("Scrape complete!");
-                    res.redirect("/");
-                }
+            }).then(function(inserted) {
+                res.redirect("/");
+            }).catch(function(error) {
+                console.log(error);
             });
         });
+    });
+});
+
+app.get("/delete", function(req, res) {
+    db.Article.deleteMany({}).then(function(deleted) {
+        res.redirect("/");
+    }).catch(function(error) {
+        console.log(error);
     });
 });
 
