@@ -1,1 +1,20 @@
-<h1>saved</h1>
+<div class="jumbotron jumbotron-fluid text-center">
+    <div class="container">
+        <h1 class="display-4 pt-5 mt-5">Saved Articles</h1>
+        <p class="lead">Your Saved Articles</p>
+    </div>
+</div>
+
+<div class="container">
+    {{#each articles}}
+    <div class="card">
+        <div class="card-header">
+            <a href="{{link}}" target="_blank">{{title}}</a>
+            <a href="/save" class="btn btn-success save-btn" data-id="{{_id}}">Save Article</a>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{summary}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>

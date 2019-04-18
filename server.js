@@ -37,7 +37,12 @@ app.get("/", function(req, res) {
 
 // Saved articles
 app.get("/saved", function (req, res) {
-    res.render("saved");
+    db.Article.find({saved: true}).then(function(savedArticles) {
+        console.log(savedArticles);
+        res.render("saved", {articles: savedArticles});
+    }).catch(function(error) {
+        console.log(error);
+    });
 });
 
 // Scrap new articles
@@ -78,8 +83,7 @@ app.get("/delete", function(req, res) {
 app.put("/save/:id", function(req, res) {
     db.Article.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { saved: true } },
-      { new: true }
+      { $set: { saved: true } }
     )
       .then(function(saved) {
         res.json(saved);
