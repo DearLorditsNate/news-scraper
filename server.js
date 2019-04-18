@@ -38,7 +38,7 @@ app.get("/", function(req, res) {
 // Saved articles
 app.get("/saved", function (req, res) {
     db.Article.find({saved: true}).then(function(savedArticles) {
-        console.log(savedArticles);
+        // console.log(savedArticles);
         res.render("saved", {articles: savedArticles});
     }).catch(function(error) {
         console.log(error);
@@ -72,7 +72,7 @@ app.get("/scrape", function (req, res) {
     });
 });
 
-app.get("/delete", function(req, res) {
+app.get("/clear", function(req, res) {
     db.Article.deleteMany({}).then(function(deleted) {
         res.redirect("/");
     }).catch(function(error) {
@@ -91,6 +91,16 @@ app.put("/save/:id", function(req, res) {
       .catch(function(error) {
         console.log(error);
       });
+});
+
+app.delete("/delete/:id", function(req, res) {
+    db.Article.deleteOne({_id: req.params.id}).then(function(deleted) {
+        console.log(deleted);
+        // res.redirect("back");
+        // res.json(deleted);
+    }).catch(function(error) {
+        console.log(error);
+    });
 });
 
 // Start the server
