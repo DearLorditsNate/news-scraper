@@ -45,7 +45,7 @@ app.get("/saved", function (req, res) {
     });
 });
 
-// Scrap new articles
+// Scrape new articles
 app.get("/scrape", function (req, res) {
     axios.get("https://www.digg.com").then(function (response) {
         var $ = cheerio.load(response.data);

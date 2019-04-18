@@ -7,10 +7,11 @@
 
 <div class="container">
     {{#each articles}}
-    <div class="card">
+    <div class="card m-3">
         <div class="card-header">
-            <a href="{{link}}" target="_blank">{{title}}</a>
-            <a href="/save" class="btn btn-success save-btn" data-id="{{_id}}">Save Article</a>
+            <a href="{{link}}" target="_blank" class="title">{{title}}</a>
+            <a href="/save" class="btn btn-danger delete-btn" data-id="{{_id}}">Delete From Saved</a>
+            <a href="/save" class="btn btn-warning note-btn" data-id="{{_id}}">Article Notes</a>
         </div>
         <div class="card-body">
             <p class="card-text">{{summary}}</p>
