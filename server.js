@@ -27,8 +27,7 @@ mongoose.connect("mongodb://localhost/news-scraper", { useNewUrlParser: true });
 // Routes
 // Home page
 app.get("/", function(req, res) {
-    db.Article.find({}).then(function(dbArticles) {
-        // console.log(dbArticles);
+    db.Article.find({saved: false}).then(function(dbArticles) {
         res.render("home", {articles: dbArticles}); 
     }).catch(function(error) {
         console.log(error);
@@ -96,7 +95,6 @@ app.put("/save/:id", function(req, res) {
 app.delete("/delete/:id", function(req, res) {
     db.Article.deleteOne({_id: req.params.id}).then(function(deleted) {
         console.log(deleted);
-        // res.redirect("back");
         res.json(deleted);
     }).catch(function(error) {
         console.log(error);
