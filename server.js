@@ -97,7 +97,7 @@ app.delete("/delete/:id", function(req, res) {
     db.Article.deleteOne({_id: req.params.id}).then(function(deleted) {
         console.log(deleted);
         // res.redirect("back");
-        // res.json(deleted);
+        res.json(deleted);
     }).catch(function(error) {
         console.log(error);
     });

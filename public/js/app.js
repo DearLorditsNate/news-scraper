@@ -16,6 +16,7 @@ $(document).ready(function() {
             url: "/delete/" + $(this).attr("data-id")
         }).then(function(response) {
             console.log(response);
+            window.location = "/saved"
         });
     });
 });
