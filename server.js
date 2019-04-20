@@ -123,7 +123,7 @@ app.post("/savenote/:id", function(req, res) {
 });
 
 app.get("/notes/:id", function(req, res) {
-    db.Article.findOne({_id: req.params.id}).populate("note").then(function(dbArticle) {
+    db.Article.findOne({_id: req.params.id}).populate("notes").then(function(dbArticle) {
         res.json(dbArticle);
     }).catch(function(error) {
         console.log(error);

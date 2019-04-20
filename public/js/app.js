@@ -27,6 +27,9 @@ $(document).ready(function() {
         $("#note-modal").modal("show");
         $id = $(this).data("id");
 
+        // Clear old notes and id
+        $("#display-notes").empty();
+        $(".modal-title").text("");
 
         // Populate notes
         $.ajax({
@@ -34,6 +37,17 @@ $(document).ready(function() {
             url: "/notes/" + $id
         }).then(function(response) {
             console.log(response);
+            var $p = $("<p>");
+            if (!response.notes.length) {
+                $p.text("No notes!");
+                $("#display-notes").append($p);
+            } else {
+                for (var i = 0; i < response.notes.length; i++) {
+                    $p.text(response.notes[i].note);
+                    $("#display-notes").append($p);
+                }
+            }
+            $(".modal-title").text(`Note for article ${response._id}`);
         });
     });
 
