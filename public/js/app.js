@@ -22,10 +22,18 @@ $(document).ready(function() {
     });
 
     $(".note-btn").on("click", function() {
-        // event.preventDefault();
-        $("#note-modal").modal("toggle");
+        $("#note-modal").modal("show");
         var $id = $(this).data("id");
 
+        // Populate notes
+        $.ajax({
+            method: "GET",
+            url: "/notes/" + $id
+        }).then(function(response) {
+            console.log(response);
+        });
+
+        // Save new note
         $(".save-note-btn").on("click", function() {
             var $note = $(".modal textarea")
             .val()
@@ -40,6 +48,7 @@ $(document).ready(function() {
             }
             }).then(function(response) {
                 console.log(response);
+                $("#note-modal").modal("hide");
             });
         });
     });

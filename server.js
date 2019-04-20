@@ -37,7 +37,6 @@ app.get("/", function(req, res) {
 // Saved articles
 app.get("/saved", function (req, res) {
     db.Article.find({saved: true}).then(function(savedArticles) {
-        // console.log(savedArticles);
         res.render("saved", {articles: savedArticles});
     }).catch(function(error) {
         console.log(error);
@@ -105,17 +104,29 @@ app.delete("/delete/:id", function(req, res) {
 });
 
 app.post("/savenote/:id", function(req, res) {
-    db.Note.create({note: req.body.note}).then(function(dbNote) {
-        return db.Article.findOneAndUpdate(
-          { _id: req.params.id },
-          { note: dbNote._id },
-          { new: true }
-        ).then(function(dbArticle) {
-            console.log(dbArticle);
-            res.json(dbArticle);
-        }).catch(function(error) {
-            console.log(error);
+    db.Note.create({ note: req.body.note }).then(function(
+      dbNote
+    ) {
+      return db.Article.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: { notes: dbNote._id } },
+        { new: true }
+      )
+        .then(function(dbArticle) {
+          console.log(dbArticle);
+          res.json(dbArticle);
+        })
+        .catch(function(error) {
+          console.log(error);
         });
+    });
+});
+
+app.get("/notes/:id", function(req, res) {
+    db.Article.findOne({_id: req.params.id}).populate("note").then(function(dbArticle) {
+        res.json(dbArticle);
+    }).catch(function(error) {
+        console.log(error);
     });
 });
 
