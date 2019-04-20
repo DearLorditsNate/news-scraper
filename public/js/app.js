@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var $id;
+
     $(".save-btn").on("click", function() {
         event.preventDefault();
         $.ajax({
@@ -23,7 +25,8 @@ $(document).ready(function() {
 
     $(".note-btn").on("click", function() {
         $("#note-modal").modal("show");
-        var $id = $(this).data("id");
+        $id = $(this).data("id");
+
 
         // Populate notes
         $.ajax({
@@ -32,24 +35,26 @@ $(document).ready(function() {
         }).then(function(response) {
             console.log(response);
         });
+    });
 
-        // Save new note
-        $(".save-note-btn").on("click", function() {
-            var $note = $(".modal textarea")
-            .val()
-            .trim();
-            console.log($note);
-            console.log($id);
-            $.ajax({
-            method: "POST",
-            url: "/savenote/" + $id,
-            data: {
-                note: $note
-            }
-            }).then(function(response) {
-                console.log(response);
-                $("#note-modal").modal("hide");
-            });
+    // Save new note
+    $(".save-note-btn").on("click", function() {
+        var $note = $(".modal textarea")
+        .val()
+        .trim();
+        console.log($note);
+        console.log($id);
+        $.ajax({
+        method: "POST",
+        url: "/savenote/" + $id,
+        data: {
+            note: $note
+        }
+        }).then(function(response) {
+            console.log(response);
+            $(".modal textarea").val("");
+            $id = null;
+            $("#note-modal").modal("hide");
         });
     });
 });
