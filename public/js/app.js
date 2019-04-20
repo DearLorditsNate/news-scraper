@@ -38,14 +38,17 @@ $(document).ready(function() {
         }).then(function(response) {
             console.log(response);
             var $p = $("<p>");
+            var $ul = $("<ul>");
             if (!response.notes.length) {
                 $p.text("No notes!");
                 $("#display-notes").append($p);
             } else {
                 for (var i = 0; i < response.notes.length; i++) {
-                    $p.text(response.notes[i].note);
-                    $("#display-notes").append($p);
+                    var $li = $("<li>");
+                    $li.text(response.notes[i].note);
+                    $ul.append($li);
                 }
+                $("#display-notes").append($ul);
             }
             $(".modal-title").text(`Note for article ${response._id}`);
         });
