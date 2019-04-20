@@ -122,6 +122,15 @@ app.post("/savenote/:id", function(req, res) {
     });
 });
 
+app.delete("/deletenote/:id", function(req, res) {
+    db.Note.deleteOne({_id: req.params.id}).then(function(deleted) {
+        console.log(deleted);
+        res.json(deleted);
+    }).catch(function(error) {
+        console.log(error);
+    });
+});
+
 app.get("/notes/:id", function(req, res) {
     db.Article.findOne({_id: req.params.id}).populate("notes").then(function(dbArticle) {
         res.json(dbArticle);

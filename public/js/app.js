@@ -46,7 +46,7 @@ $(document).ready(function() {
                 for (var i = 0; i < response.notes.length; i++) {
                     var $p = $("<p>");
                     var $btn = $("<button>");
-                    $btn.text("X").addClass("note-delete-btn");
+                    $btn.text("X").addClass("note-delete-btn").attr("data-id", response.notes[i]._id);
                     $p.text(response.notes[i].note).addClass("note").append($btn);
                     $div.append($p);
                 }
@@ -63,16 +63,32 @@ $(document).ready(function() {
         .trim();
         console.log($note);
         console.log($id);
-        $.ajax({
-        method: "POST",
-        url: "/savenote/" + $id,
-        data: {
-            note: $note
-        }
-        }).then(function(response) {
+        if (!$note) {
+            alert("Please enter a note!");
+        } else {
+            $.ajax({
+            method: "POST",
+            url: "/savenote/" + $id,
+            data: {
+                note: $note
+            }
+            }).then(function(response) {
             console.log(response);
             $(".modal textarea").val("");
             $id = null;
+            $("#note-modal").modal("hide");
+            });
+        }
+    });
+
+    // Delete note
+    $(document).on("click", ".note-delete-btn", function() {
+        var $id = $(this).data("id");
+        $.ajax({
+            method: "DELETE",
+            url: "/deletenote/" + $id
+        }).then(function(response) {
+            console.log(response);
             $("#note-modal").modal("hide");
         });
     });
