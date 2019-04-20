@@ -38,3 +38,16 @@
   display: inline-block;
   width: 70%;
 }
+
+.note {
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.note-delete-btn {
+  float: right;
+  background-color: red;
+  border-radius: 5px;
+  padding: 2px 20px;
+}

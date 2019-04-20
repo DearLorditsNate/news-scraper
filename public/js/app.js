@@ -38,17 +38,19 @@ $(document).ready(function() {
         }).then(function(response) {
             console.log(response);
             var $p = $("<p>");
-            var $ul = $("<ul>");
+            var $div = $("<div>");
             if (!response.notes.length) {
                 $p.text("No notes!");
                 $("#display-notes").append($p);
             } else {
                 for (var i = 0; i < response.notes.length; i++) {
-                    var $li = $("<li>");
-                    $li.text(response.notes[i].note);
-                    $ul.append($li);
+                    var $p = $("<p>");
+                    var $btn = $("<button>");
+                    $btn.text("X").addClass("note-delete-btn");
+                    $p.text(response.notes[i].note).addClass("note").append($btn);
+                    $div.append($p);
                 }
-                $("#display-notes").append($ul);
+                $("#display-notes").append($div);
             }
             $(".modal-title").text(`Note for article ${response._id}`);
         });
