@@ -61,8 +61,6 @@ $(document).ready(function() {
         var $note = $(".modal textarea")
         .val()
         .trim();
-        console.log($note);
-        console.log($id);
         if (!$note) {
             alert("Please enter a note!");
         } else {

@@ -46,16 +46,13 @@ app.get("/saved", function (req, res) {
 // Scrape new articles
 app.get("/scrape", function (req, res) {
     axios.get("https://www.digg.com").then(function (response) {
+        // console.log(response.data);
         var $ = cheerio.load(response.data);
-        $("article").each(function (i, element) {
+        $(".digg-story").each(function (i, element) {
 
             var title = $(element).find("h2").text();
             var link = $(element).attr("data-contenturl");
             var summary = $(element).find(".digg-story__description").text();
-
-            console.log(title);
-            console.log(link);
-            console.log(summary);
 
             db.Article.create({
                 title: title,
@@ -96,7 +93,6 @@ app.put("/save/:id", function(req, res) {
 
 app.delete("/delete/:id", function(req, res) {
     db.Article.deleteOne({_id: req.params.id}).then(function(deleted) {
-        console.log(deleted);
         res.json(deleted);
     }).catch(function(error) {
         console.log(error);
@@ -113,7 +109,6 @@ app.post("/savenote/:id", function(req, res) {
         { new: true }
       )
         .then(function(dbArticle) {
-          console.log(dbArticle);
           res.json(dbArticle);
         })
         .catch(function(error) {
@@ -124,7 +119,6 @@ app.post("/savenote/:id", function(req, res) {
 
 app.delete("/deletenote/:id", function(req, res) {
     db.Note.deleteOne({_id: req.params.id}).then(function(deleted) {
-        console.log(deleted);
         res.json(deleted);
     }).catch(function(error) {
         console.log(error);
