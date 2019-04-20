@@ -34,7 +34,7 @@ app.get("/", function(req, res) {
     });
 });
 
-// Saved articles
+// Get saved articles
 app.get("/saved", function (req, res) {
     db.Article.find({saved: true}).then(function(savedArticles) {
         res.render("saved", {articles: savedArticles});
@@ -46,7 +46,6 @@ app.get("/saved", function (req, res) {
 // Scrape new articles
 app.get("/scrape", function (req, res) {
     axios.get("https://www.digg.com").then(function (response) {
-        // console.log(response.data);
         var $ = cheerio.load(response.data);
         $(".digg-story").each(function (i, element) {
 
@@ -67,6 +66,7 @@ app.get("/scrape", function (req, res) {
     });
 });
 
+// Clear database
 app.get("/clear", function(req, res) {
     db.Article.deleteMany({}).then(function(deleted) {
     }).then(function(dbArticle) {
@@ -78,6 +78,7 @@ app.get("/clear", function(req, res) {
     });
 });
 
+// Save article (update saved property to true)
 app.put("/save/:id", function(req, res) {
     db.Article.findOneAndUpdate(
       { _id: req.params.id },
@@ -91,6 +92,7 @@ app.put("/save/:id", function(req, res) {
       });
 });
 
+// Delete article
 app.delete("/delete/:id", function(req, res) {
     db.Article.deleteOne({_id: req.params.id}).then(function(deleted) {
         res.json(deleted);
@@ -99,6 +101,7 @@ app.delete("/delete/:id", function(req, res) {
     });
 });
 
+// Save new note
 app.post("/savenote/:id", function(req, res) {
     db.Note.create({ note: req.body.note }).then(function(
       dbNote
@@ -117,6 +120,7 @@ app.post("/savenote/:id", function(req, res) {
     });
 });
 
+// Delete note
 app.delete("/deletenote/:id", function(req, res) {
     db.Note.deleteOne({_id: req.params.id}).then(function(deleted) {
         res.json(deleted);
@@ -125,6 +129,7 @@ app.delete("/deletenote/:id", function(req, res) {
     });
 });
 
+// Get notes by article
 app.get("/notes/:id", function(req, res) {
     db.Article.findOne({_id: req.params.id}).populate("notes").then(function(dbArticle) {
         res.json(dbArticle);

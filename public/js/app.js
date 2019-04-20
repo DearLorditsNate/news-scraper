@@ -1,6 +1,8 @@
 $(document).ready(function() {
+    // Initiate with global scope to be accesible by different click handlers
     var $id;
 
+    // Save article
     $(".save-btn").on("click", function() {
         event.preventDefault();
         $.ajax({
@@ -12,6 +14,7 @@ $(document).ready(function() {
         });
     });
 
+    // Delete saved article
     $(".delete-btn").on("click", function() {
         event.preventDefault();
         $.ajax({
@@ -23,6 +26,7 @@ $(document).ready(function() {
         });
     });
 
+    // Displays notes modal and gets saved notes
     $(".note-btn").on("click", function() {
         $("#note-modal").modal("show");
         $id = $(this).data("id");
