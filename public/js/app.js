@@ -24,5 +24,23 @@ $(document).ready(function() {
     $(".note-btn").on("click", function() {
         // event.preventDefault();
         $("#note-modal").modal("toggle");
+        var $id = $(this).data("id");
+
+        $(".save-note-btn").on("click", function() {
+            var $note = $(".modal textarea")
+            .val()
+            .trim();
+            console.log($note);
+            console.log($id);
+            $.ajax({
+            method: "POST",
+            url: "/savenote/" + $id,
+            data: {
+                note: $note
+            }
+            }).then(function(response) {
+                console.log(response);
+            });
+        });
     });
 });

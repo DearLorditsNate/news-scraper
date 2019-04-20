@@ -73,6 +73,9 @@ app.get("/scrape", function (req, res) {
 
 app.get("/clear", function(req, res) {
     db.Article.deleteMany({}).then(function(deleted) {
+    }).then(function(dbArticle) {
+        return db.Note.deleteMany({});
+    }).then(function(dbNote) {
         res.redirect("/");
     }).catch(function(error) {
         console.log(error);
@@ -98,6 +101,21 @@ app.delete("/delete/:id", function(req, res) {
         res.json(deleted);
     }).catch(function(error) {
         console.log(error);
+    });
+});
+
+app.post("/savenote/:id", function(req, res) {
+    db.Note.create({note: req.body.note}).then(function(dbNote) {
+        return db.Article.findOneAndUpdate(
+          { _id: req.params.id },
+          { note: dbNote._id },
+          { new: true }
+        ).then(function(dbArticle) {
+            console.log(dbArticle);
+            res.json(dbArticle);
+        }).catch(function(error) {
+            console.log(error);
+        });
     });
 });
 
