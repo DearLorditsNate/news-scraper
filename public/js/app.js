@@ -20,4 +20,9 @@ $(document).ready(function() {
             window.location = "/saved"
         });
     });
+
+    $(".note-btn").on("click", function() {
+        // event.preventDefault();
+        $("#note-modal").modal("toggle");
+    });
 });
