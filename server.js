@@ -22,7 +22,12 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost/news-scraper", { useNewUrlParser: true });
+var databaseUri = "mongodb://localhost/news-scraper";
+if (process.env.MONGODB_URI) {
+    mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+} else {
+    mongoose.connect(databaseUri, { useNewUrlParser: true });
+}
 
 // Routes
 // Home page
